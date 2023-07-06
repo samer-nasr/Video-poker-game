@@ -23,6 +23,7 @@ h2 {
     margin-right: 3px;
     margin-left: 3px;
     font-size: 22px;
+    height: 15px;
 }
 
 .cards { 
@@ -31,13 +32,14 @@ h2 {
    align-items: center;
    text-align: center;
    color: white;
-   margin-top: 20px;
+   margin-top: 10px;
 }
 
 
 img { 
     margin-right: 8px;
     width: 200px;
+    height: 250px;
     border-radius: 8px;
 }
 
@@ -59,6 +61,7 @@ img {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 20px;
 }
 
 #bet1 , #bet5 { 

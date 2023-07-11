@@ -19,12 +19,23 @@ body {
     text-align: right;
 }
 
-.title{ 
-    text-align: center;
-    color: #ffff00;
-}
-
 h2 { 
     margin-right: 3px;
     margin-left: 3px;
+    font-size: 22px;
+}
+
+.cards { 
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   text-align: center;
+   color: white;
+   margin-top: 30px;
+}
+
+
+img { 
+    margin-right: 8px;
+    width: 200px;
 }

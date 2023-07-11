@@ -1,0 +1,30 @@
+body { 
+    background-color: #000099;
+}
+.reward-title { 
+    border: 4px yellow solid;
+    width: 320px;
+    color: #ffff00;
+}
+
+.top { 
+    display: flex;
+    background-color: #00003f;
+}
+
+.reward-1, .reward-2, .reward-3, .reward-4, .reward-5 {
+    border: 4px #ffff00 solid;
+    width: 300px;
+    color: #ffff00;
+    text-align: right;
+}
+
+.title{ 
+    text-align: center;
+    color: #ffff00;
+}
+
+h2 { 
+    margin-right: 3px;
+    margin-left: 3px;
+}

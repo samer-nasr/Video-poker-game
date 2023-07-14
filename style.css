@@ -31,7 +31,7 @@ h2 {
    align-items: center;
    text-align: center;
    color: white;
-   margin-top: 30px;
+   margin-top: 20px;
 }
 
 
@@ -39,3 +39,8 @@ img {
     margin-right: 8px;
     width: 200px;
 }
+
+#h1 ,#h2 ,#h3 ,#h3 ,#h4 ,#h5 { 
+    min-height: 30px;
+}
+

@@ -71,5 +71,5 @@ $("#bet5").click(function(){
 });
 
 $("#draw").click(function(){
-    
+    $("#card1").
 });

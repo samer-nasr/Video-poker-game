@@ -38,6 +38,7 @@ h2 {
 img { 
     margin-right: 8px;
     width: 200px;
+    border-radius: 8px;
 }
 
 #h1 ,#h2 ,#h3 ,#h3 ,#h4 ,#h5 { 

@@ -45,3 +45,38 @@ img {
     min-height: 30px;
 }
 
+#draw { 
+    background-color: #ffff00;
+    color: black;
+    border: 4px black solid;
+    min-width: 100px;
+    min-height: 50px;
+    font-weight: bolder;
+    margin-left: 50px;
+}
+
+#bets { 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#bet1 , #bet5 { 
+    background-color: #ffff00;
+    color: black;
+    border: 4px black solid;
+    min-width: 100px;
+    min-height: 50px;
+    font-weight: bolder;
+    margin-right: 10px;
+}
+
+#bet { 
+    background-color: #ffff00;
+    color: black;
+    border: 4px black solid;
+    min-width: 50px;
+    min-height: 50px;
+    font-weight: bolder;
+    margin-right: 10px;
+}

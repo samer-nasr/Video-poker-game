@@ -38,3 +38,38 @@ $("#card5").click(function(){
         $("#h5").html("");
     }
 });
+
+$(".reward-1").css("background-color", "red");
+
+$("#bet1").click(function(){
+    if($(".reward-1").css("background-color") == "rgb(255, 0, 0)"){ 
+        $(".reward-1").css("background-color", "#00003f");
+        $(".reward-2").css("background-color", "red");
+    }else if($(".reward-2").css("background-color") == "rgb(255, 0, 0)"){ 
+        $(".reward-2").css("background-color", "#00003f");
+        $(".reward-3").css("background-color", "red");
+    }else if($(".reward-3").css("background-color") == "rgb(255, 0, 0)"){ 
+        $(".reward-3").css("background-color", "#00003f");
+        $(".reward-4").css("background-color", "red");
+    }else if($(".reward-4").css("background-color") == "rgb(255, 0, 0)"){ 
+        $(".reward-4").css("background-color", "#00003f");
+        $(".reward-5").css("background-color", "red");
+    }else if($(".reward-5").css("background-color") == "rgb(255, 0, 0)"){ 
+        $(".reward-5").css("background-color", "#00003f");
+        $(".reward-1").css("background-color", "red");
+    }
+});
+
+
+$("#bet5").click(function(){
+    $(".reward-1").css("background-color", "#00003f");
+    $(".reward-2").css("background-color", "#00003f");
+    $(".reward-3").css("background-color", "#00003f");
+    $(".reward-4").css("background-color", "#00003f");
+
+    $(".reward-5").css("background-color", "red");
+});
+
+$("#draw").click(function(){
+    
+});

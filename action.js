@@ -130,10 +130,24 @@ $("#bet5").click(function(){
 $("#draw").click(function(){
 
     if($("#draw").text() == "DEAL"){ 
+        //Change button text from deal to draw//
         $("#draw").text("DRAW");
+
+        //Disable the buttons bet 1 and bet 5 while playing//
+        $("#bet1").prop('disabled', true);
+        $("#bet5").prop('disabled', true);
+
+
     }else if($("#draw").text() == "DRAW"){ 
+        //Enable the buttons bet 1 and bet 5//
+        $("#bet1").prop('disabled', false);
+        $("#bet5").prop('disabled', false);
+
+        //Change button text from draw to deal//
         $("#draw").text("DEAL");
     }
+
+
     
     var first = getCardsIndex();
     
@@ -150,7 +164,7 @@ $("#draw").click(function(){
     $("#h5").text(first[4]);
 });
 
-
+//Function to return a array of size 5 that contains the index of the cards randomly//
 function getCardsIndex(){ 
     var cardIndex = [];
     for(let i = 0 ; i<5 ; i++){ 
@@ -162,7 +176,7 @@ function getCardsIndex(){
             }
         }
         if(exist){ 
-            getCards();
+            getCardsIndex();
         }else{ 
             cardIndex[i] = t;
         }
@@ -170,6 +184,7 @@ function getCardsIndex(){
     return cardIndex;
 }
 
+//Function to get a number between 0 and 51//
 function getRandomNumber() {
     return Math.floor(Math.random() * 52);
   }

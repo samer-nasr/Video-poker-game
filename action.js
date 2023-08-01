@@ -1,4 +1,6 @@
 var cards = [];
+var helds = [];
+resetHelds();
 cards[0] = "./cards/1b.PNG";
 cards[1] = "./cards/2b.PNG";
 cards[2] = "./cards/3b.PNG";
@@ -59,40 +61,50 @@ cards[51] = "./cards/A13.PNG";
 $("#card1").click(function(){ 
     if($("#h1").text() == ""){ 
         $("#h1").html("HELD");
+        helds[0] = true;
     }else{ 
         $("#h1").html("");
+        helds[0] = false;
     }
 });
 
 $("#card2").click(function(){ 
     if($("#h2").text() == ""){ 
         $("#h2").html("HELD");
+        helds[1] = true;
     }else{ 
         $("#h2").html("");
+        helds[1] = false;
     }
 });
 
 $("#card3").click(function(){ 
     if($("#h3").text() == ""){ 
         $("#h3").html("HELD");
+        helds[2] = true;
     }else{ 
         $("#h3").html("");
+        helds[2] = false;
     }
 });
 
 $("#card4").click(function(){ 
     if($("#h4").text() == ""){ 
         $("#h4").html("HELD");
+        helds[3] = true;
     }else{ 
         $("#h4").html("");
+        helds[3] = false;
     }
 });
 
 $("#card5").click(function(){ 
     if($("#h5").text() == ""){ 
         $("#h5").html("HELD");
+        helds[4] = true;
     }else{ 
         $("#h5").html("");
+        helds[4] = false;
     }
 });
 
@@ -135,13 +147,21 @@ $("#draw").click(function(){
 
         //Disable the buttons bet 1 and bet 5 while playing//
         $("#bet1").prop('disabled', true);
+        $("#bet").prop('disabled', true);
+        $("#bet1").css("background-color","grey");
+        $("#bet").css("background-color","grey");
         $("#bet5").prop('disabled', true);
+        $("#bet5").css("background-color","grey");
 
 
     }else if($("#draw").text() == "DRAW"){ 
         //Enable the buttons bet 1 and bet 5//
         $("#bet1").prop('disabled', false);
+        $("#bet").prop('disabled', false);
+        $("#bet1").css("background-color","#ffff00");
+        $("#bet").css("background-color","#ffff00");
         $("#bet5").prop('disabled', false);
+        $("#bet5").css("background-color","#ffff00");
 
         //Change button text from draw to deal//
         $("#draw").text("DEAL");
@@ -157,11 +177,17 @@ $("#draw").click(function(){
     $("#card4").attr("src", cards[first[3]]);
     $("#card5").attr("src", cards[first[4]]);
 
-    $("#h1").text(first[0]);
-    $("#h2").text(first[1]);
-    $("#h3").text(first[2]);
-    $("#h4").text(first[3]);
-    $("#h5").text(first[4]);
+    // $("#h1").text(first[0]);
+    // $("#h2").text(first[1]);
+    // $("#h3").text(first[2]);
+    // $("#h4").text(first[3]);
+    // $("#h5").text(first[4]);
+ 
+    $("#h1").text(helds[0]);
+    $("#h2").text(helds[1]);
+    $("#h3").text(helds[2]);
+    $("#h4").text(helds[3]);
+    $("#h5").text(helds[4]);
 });
 
 //Function to return a array of size 5 that contains the index of the cards randomly//
@@ -176,7 +202,13 @@ function getCardsIndex(){
             }
         }
         if(exist){ 
-            getCardsIndex();
+            $(".reward-4").css("background-color", "red");
+            let x = getRandomNumber();
+            while(x==cardIndex[0]||x==cardIndex[1]||x==cardIndex[2]||x==cardIndex[3]||x==cardIndex[4]){ 
+                x = getRandomNumber();
+            }
+            cardIndex[i] = x;
+            
         }else{ 
             cardIndex[i] = t;
         }
@@ -187,4 +219,10 @@ function getCardsIndex(){
 //Function to get a number between 0 and 51//
 function getRandomNumber() {
     return Math.floor(Math.random() * 52);
-  }
+}
+
+function resetHelds(){ 
+    for (let i = 0; i < 5; i++) {
+        helds[i] = false;
+    }
+}

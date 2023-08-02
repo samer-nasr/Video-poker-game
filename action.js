@@ -186,23 +186,27 @@ $("#draw").click(function(){
         //Change button text from draw to deal//
         $("#draw").text("DEAL");
 
+        //Get new cards list//
         var second = getCardsIndex();
 
+        //Modifie the new list to work with the held selected by the user//
         for(let i = 0 ; i < 5 ; i++){ 
             if(helds[i]){ 
                 second[i] = first[i];
             }
         }
 
+        //Display the cards on the screen//
         $("#card1").attr("src", cards[second[0]]);
         $("#card2").attr("src", cards[second[1]]);
         $("#card3").attr("src", cards[second[2]]);
         $("#card4").attr("src", cards[second[3]]);
         $("#card5").attr("src", cards[second[4]]);
+
+        $(".rf").css("background-color","red");
         
     }
 
- 
     // $("#h1").text(helds[0]);
     // $("#h2").text(helds[1]);
     // $("#h3").text(helds[2]);
@@ -222,7 +226,6 @@ function getCardsIndex(){
             }
         }
         if(exist){ 
-            // $(".reward-4").css("background-color", "red");
             let x = getRandomNumber();
             while(x==cardIndex[0]||x==cardIndex[1]||x==cardIndex[2]||x==cardIndex[3]||x==cardIndex[4]){ 
                 x = getRandomNumber();
@@ -252,15 +255,3 @@ function resetHelds(){
         helds[i] = false;
     }
 }
-
-// function getHeldedCardsIndex(){ 
-//     var cardsIndex = [];
-//     let c = 0;
-//     for(let i = 0 ; i < helds.length ; i++){ 
-//         if(helds[i]) { 
-//             cardsIndex[c];
-//             c++;
-//         }
-//     }
-//     return cardsIndex;
-// }

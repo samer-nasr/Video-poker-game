@@ -203,7 +203,15 @@ $("#draw").click(function(){
         $("#card4").attr("src", cards[second[3]]);
         $("#card5").attr("src", cards[second[4]]);
 
-        $(".rf").css("background-color","red");
+        // $(".rf").css("background-color","red");
+        // $(".sf").css("background-color","red");
+        // $(".4k").css("background-color","red");
+        // $(".fh").css("background-color","red");
+        // $(".f").css("background-color","red");
+        // $(".s").css("background-color","red");
+        // $(".3k").css("background-color","red");
+        // $(".2p").css("background-color","red");
+        // $(".jb").css("background-color","red");
         
     }
 

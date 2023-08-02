@@ -1,5 +1,7 @@
 var cards = [];
-var helds = [];
+var first = [];
+var helds = [Boolean];
+var canHeld = false;
 resetHelds();
 cards[0] = "./cards/1b.PNG";
 cards[1] = "./cards/2b.PNG";
@@ -59,7 +61,7 @@ cards[51] = "./cards/A13.PNG";
 
 
 $("#card1").click(function(){ 
-    if($("#h1").text() == ""){ 
+    if($("#h1").text() == "" && canHeld){ 
         $("#h1").html("HELD");
         helds[0] = true;
     }else{ 
@@ -69,7 +71,7 @@ $("#card1").click(function(){
 });
 
 $("#card2").click(function(){ 
-    if($("#h2").text() == ""){ 
+    if($("#h2").text() == "" && canHeld){ 
         $("#h2").html("HELD");
         helds[1] = true;
     }else{ 
@@ -79,7 +81,7 @@ $("#card2").click(function(){
 });
 
 $("#card3").click(function(){ 
-    if($("#h3").text() == ""){ 
+    if($("#h3").text() == "" && canHeld){ 
         $("#h3").html("HELD");
         helds[2] = true;
     }else{ 
@@ -89,7 +91,7 @@ $("#card3").click(function(){
 });
 
 $("#card4").click(function(){ 
-    if($("#h4").text() == ""){ 
+    if($("#h4").text() == "" && canHeld){ 
         $("#h4").html("HELD");
         helds[3] = true;
     }else{ 
@@ -99,7 +101,7 @@ $("#card4").click(function(){
 });
 
 $("#card5").click(function(){ 
-    if($("#h5").text() == ""){ 
+    if($("#h5").text() == "" && canHeld){ 
         $("#h5").html("HELD");
         helds[4] = true;
     }else{ 
@@ -142,6 +144,12 @@ $("#bet5").click(function(){
 $("#draw").click(function(){
 
     if($("#draw").text() == "DEAL"){ 
+        //Reset helds //
+        resetHelds();
+
+        //Give the user access to held cards//
+        canHeld = true;
+
         //Change button text from deal to draw//
         $("#draw").text("DRAW");
 
@@ -153,8 +161,20 @@ $("#draw").click(function(){
         $("#bet5").prop('disabled', true);
         $("#bet5").css("background-color","grey");
 
+        //To display 5 random cards//
+        first = getCardsIndex();
+
+        $("#card1").attr("src", cards[first[0]]);
+        $("#card2").attr("src", cards[first[1]]);
+        $("#card3").attr("src", cards[first[2]]);
+        $("#card4").attr("src", cards[first[3]]);
+        $("#card5").attr("src", cards[first[4]]);
+
 
     }else if($("#draw").text() == "DRAW"){ 
+        //Remove the held access from the user//
+        canHeld = false;
+
         //Enable the buttons bet 1 and bet 5//
         $("#bet1").prop('disabled', false);
         $("#bet").prop('disabled', false);
@@ -165,29 +185,29 @@ $("#draw").click(function(){
 
         //Change button text from draw to deal//
         $("#draw").text("DEAL");
+
+        var second = getCardsIndex();
+
+        for(let i = 0 ; i < 5 ; i++){ 
+            if(helds[i]){ 
+                second[i] = first[i];
+            }
+        }
+
+        $("#card1").attr("src", cards[second[0]]);
+        $("#card2").attr("src", cards[second[1]]);
+        $("#card3").attr("src", cards[second[2]]);
+        $("#card4").attr("src", cards[second[3]]);
+        $("#card5").attr("src", cards[second[4]]);
+        
     }
 
-
-    
-    var first = getCardsIndex();
-    
-    $("#card1").attr("src", cards[first[0]]);
-    $("#card2").attr("src", cards[first[1]]);
-    $("#card3").attr("src", cards[first[2]]);
-    $("#card4").attr("src", cards[first[3]]);
-    $("#card5").attr("src", cards[first[4]]);
-
-    // $("#h1").text(first[0]);
-    // $("#h2").text(first[1]);
-    // $("#h3").text(first[2]);
-    // $("#h4").text(first[3]);
-    // $("#h5").text(first[4]);
  
-    $("#h1").text(helds[0]);
-    $("#h2").text(helds[1]);
-    $("#h3").text(helds[2]);
-    $("#h4").text(helds[3]);
-    $("#h5").text(helds[4]);
+    // $("#h1").text(helds[0]);
+    // $("#h2").text(helds[1]);
+    // $("#h3").text(helds[2]);
+    // $("#h4").text(helds[3]);
+    // $("#h5").text(helds[4]);
 });
 
 //Function to return a array of size 5 that contains the index of the cards randomly//
@@ -202,7 +222,7 @@ function getCardsIndex(){
             }
         }
         if(exist){ 
-            $(".reward-4").css("background-color", "red");
+            // $(".reward-4").css("background-color", "red");
             let x = getRandomNumber();
             while(x==cardIndex[0]||x==cardIndex[1]||x==cardIndex[2]||x==cardIndex[3]||x==cardIndex[4]){ 
                 x = getRandomNumber();
@@ -222,7 +242,25 @@ function getRandomNumber() {
 }
 
 function resetHelds(){ 
+        $("#h1").text("");
+        $("#h2").text("");
+        $("#h3").text("");
+        $("#h4").text("");
+        $("#h5").text("");
+
     for (let i = 0; i < 5; i++) {
         helds[i] = false;
     }
 }
+
+// function getHeldedCardsIndex(){ 
+//     var cardsIndex = [];
+//     let c = 0;
+//     for(let i = 0 ; i < helds.length ; i++){ 
+//         if(helds[i]) { 
+//             cardsIndex[c];
+//             c++;
+//         }
+//     }
+//     return cardsIndex;
+// }

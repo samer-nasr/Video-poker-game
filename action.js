@@ -246,19 +246,19 @@ function test(){
 }
 
 function initializeCards(){ 
-    cards[0] = "./cards/1b.PNG";
-    cards[1] = "./cards/2b.PNG";
-    cards[2] = "./cards/3b.PNG";
-    cards[3] = "./cards/4b.PNG";
-    cards[4] = "./cards/5b.PNG";
-    cards[5] = "./cards/6b.PNG";
-    cards[6] = "./cards/7b.PNG";
-    cards[7] = "./cards/8b.PNG";
-    cards[8] = "./cards/9b.PNG";
-    cards[9] = "./cards/10b.PNG";
-    cards[10] = "./cards/11b.PNG";
-    cards[11] = "./cards/12b.PNG";
-    cards[12] = "./cards/13b.PNG";
+    cards[0] = "./cards/01B.PNG";
+    cards[1] = "./cards/02B.PNG";
+    cards[2] = "./cards/03B.PNG";
+    cards[3] = "./cards/04B.PNG";
+    cards[4] = "./cards/05B.PNG";
+    cards[5] = "./cards/06B.PNG";
+    cards[6] = "./cards/07B.PNG";
+    cards[7] = "./cards/08B.PNG";
+    cards[8] = "./cards/09B.PNG";
+    cards[9] = "./cards/10B.PNG";
+    cards[10] = "./cards/11B.PNG";
+    cards[11] = "./cards/12B.PNG";
+    cards[12] = "./cards/13B.PNG";
 
     cards[13] = "./cards/1A.PNG";
     cards[14] = "./cards/2A.PNG";

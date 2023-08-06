@@ -12,23 +12,33 @@ clickEvent();
 $(".reward-1").css("background-color", "red");
 
 function getResult(){ 
-    //jacks//
-    var jacks = [];
-    jacks[0] = cards[10];
-    jacks[1] = cards[23];
-    jacks[2] = cards[36];
-    jacks[3] = cards[49];
+    initializeCards();
+    var cardsNumbers = [];
+    var test = "";
 
-    var text = $("#card1").attr("src").substr(8,3);
-    $(".test").html(text);
+    //To get the card number and store it in a array //
+    for (let i = 0; i < onScreenCards.length; i++) {
+        let temp = onScreenCards[i].substr(8,2);
+        if(temp.charAt(0) == "0"){
+            cardsNumbers[i] = temp.charAt(1);
+        }else{
+            cardsNumbers[i] = temp;
+        } 
+        test+=cardsNumbers[i] +" ";
+    }
 
+    
 
-    // for (let i = 0; i < 5; i++) {
-    //     for (let j = i+1; j < 5; j++) {
-            
-    //     }
-        
-    // }
+    var counter = 0;
+    for(let  i = 0 ; i < 4 ; i++){ 
+        for (let j = i+1; j < cardsNumbers.length; j++) {
+            if(cardsNumbers[i] == cardsNumbers[j]){
+                counter++;
+            }
+        }
+    }
+    test+=counter;
+    $(".test").html(test);
     
 }
 
@@ -160,7 +170,8 @@ function clickEvent(){
     $("#draw").click(function(){
 
         //if the text is deal//
-        if($("#draw").text() == "DEAL"){ 
+        if($("#draw").text() == "DEAL"){
+            $(".test").text("test");
             //Reset helds //
             resetHelds();
     
@@ -214,8 +225,8 @@ function clickEvent(){
             }
     
             //Display the cards on the screen//
-            // $("#card1").attr("src", cards[second[0]]);
-            $("#card1").attr("src", cards[10]);
+            $("#card1").attr("src", cards[second[0]]);
+            // $("#card1").attr("src", cards[10]);
             $("#card2").attr("src", cards[second[1]]);
             $("#card3").attr("src", cards[second[2]]);
             $("#card4").attr("src", cards[second[3]]);

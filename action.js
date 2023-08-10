@@ -20,24 +20,67 @@ function getResult(){
     for (let i = 0; i < onScreenCards.length; i++) {
         let temp = onScreenCards[i].substr(8,2);
         if(temp.charAt(0) == "0"){
-            cardsNumbers[i] = temp.charAt(1);
+            cardsNumbers[i] = parseInt(temp.charAt(1));
         }else{
-            cardsNumbers[i] = temp;
+            cardsNumbers[i] = parseInt(temp);
         } 
         test+=cardsNumbers[i] +" ";
     }
 
     
-
+    //To check the result//
     var counter = 0;
+    var isJackOrBetter = false;
     for(let  i = 0 ; i < 4 ; i++){ 
         for (let j = i+1; j < cardsNumbers.length; j++) {
             if(cardsNumbers[i] == cardsNumbers[j]){
+                if (cardsNumbers[i] == 1 || (cardsNumbers[i] > 10 && cardsNumbers[i] < 14)) {
+                    isJackOrBetter = true;
+                }
                 counter++;
             }
         }
     }
-    test+=counter;
+
+    switch(counter){
+        case 1://JACKS OR BETTER//
+              if (isJackOrBetter) {
+                $(".jb").css("background-color","red");
+              }
+              break;
+              
+        case 2://TO PAIRS//
+                $(".2p").css("background-color","red");
+                break;
+
+        case 3://TREE OF A KIND//
+                $(".3k").css("background-color","red");
+                break;
+
+        case 4://FULL HOUSE//
+                $(".fh").css("background-color","red");
+                break;
+
+        case 6://FOUR OF A KIND//
+                $(".4k").css("background-color","red");
+                break;
+
+        case 0://STRIAGHT//
+                cardsNumbers.sort();
+                var c = 0;
+                for (let i = 0; i < cardsNumbers.length-1; i++) {
+                        if (cardsNumbers[i]+1 == (cardsNumbers[i+1])) {
+                            c++;
+                    }
+                }
+                if (c == 4) {
+                    $(".s").css("background-color","red");
+                }
+                break;
+
+    }
+
+    test+=c;
     $(".test").html(test);
     
 }
@@ -172,6 +215,9 @@ function clickEvent(){
         //if the text is deal//
         if($("#draw").text() == "DEAL"){
             $(".test").text("test");
+            //Reset results//
+            resetResult();
+
             //Reset helds //
             resetHelds();
     
@@ -225,12 +271,18 @@ function clickEvent(){
             }
     
             //Display the cards on the screen//
-            $("#card1").attr("src", cards[second[0]]);
-            // $("#card1").attr("src", cards[10]);
-            $("#card2").attr("src", cards[second[1]]);
-            $("#card3").attr("src", cards[second[2]]);
-            $("#card4").attr("src", cards[second[3]]);
-            $("#card5").attr("src", cards[second[4]]);
+            // $("#card1").attr("src", cards[second[0]]);
+            // $("#card2").attr("src", cards[second[1]]);
+            // $("#card3").attr("src", cards[second[2]]);
+            // $("#card4").attr("src", cards[second[3]]);
+            // $("#card5").attr("src", cards[second[4]]);
+
+            $("#card1").attr("src", cards[0]);
+            $("#card2").attr("src", cards[3]);
+            $("#card3").attr("src", cards[4]);
+            $("#card4").attr("src", cards[2]);
+            $("#card5").attr("src", cards[1]);
+            
 
             //get the result//
             getResult();
@@ -245,7 +297,7 @@ function test(){
         // $("#h4").text(helds[3]);
         // $("#h5").text(helds[4]);
 
-        $(".rf").css("background-color","red");
+        // $(".rf").css("background-color","red");
         // $(".sf").css("background-color","red");
         // $(".4k").css("background-color","red");
         // $(".fh").css("background-color","red");
@@ -318,4 +370,16 @@ function initializeCards(){
     onScreenCards[2] = $("#card3").attr("src");
     onScreenCards[3] = $("#card4").attr("src");
     onScreenCards[4] = $("#card5").attr("src");
+}
+
+function resetResult(){ 
+        $(".rf").css("background-color","#00003f");
+        $(".sf").css("background-color","#00003f");
+        $(".4k").css("background-color","#00003f");
+        $(".fh").css("background-color","#00003f");
+        $(".f").css("background-color","#00003f");
+        $(".s").css("background-color","#00003f");
+        $(".3k").css("background-color","#00003f");
+        $(".2p").css("background-color","#00003f");
+        $(".jb").css("background-color","#00003f");
 }

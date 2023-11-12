@@ -14,6 +14,7 @@ $(".reward-1").css("background-color", "red");
 function getResult(){ 
     initializeCards();
     var cardsNumbers = [];
+    var cardsType = [];
     var test = "";
 
     //To get the card number and store it in a array //
@@ -24,7 +25,10 @@ function getResult(){
         }else{
             cardsNumbers[i] = parseInt(temp);
         } 
-        test+=cardsNumbers[i] +" ";
+        //test+=cardsNumbers[i] +" ";
+
+        cardsType[i] = onScreenCards[i].substr(10,1);
+        test+= cardsType[i];
     }
 
     
@@ -49,7 +53,7 @@ function getResult(){
               }
               break;
               
-        case 2://TO PAIRS//
+        case 2://TOO PAIRS//
                 $(".2p").css("background-color","red");
                 break;
 
@@ -65,17 +69,40 @@ function getResult(){
                 $(".4k").css("background-color","red");
                 break;
 
-        case 0://STRIAGHT//
+        case 0://STRIAGHT AND FLUSH AND STRAIGHTFLUSH//
+                
                 cardsNumbers.sort();
+                //Variable for straight//
                 var c = 0;
+
+                //Variable for flush//
+                var f = 0;
+
                 for (let i = 0; i < cardsNumbers.length-1; i++) {
+                        
                         if (cardsNumbers[i]+1 == (cardsNumbers[i+1])) {
                             c++;
-                    }
+                        }
+                        if (cardsType[i] == cardsType[i+1]) {
+                            f+= 1;
+                        }
+
                 }
-                if (c == 4) {
+                //Royal Flush//
+                if (c == 3 && f == 4 && cardsNumbers[0] == 1) {
+                    $(".rf").css("background-color","red");
+                //Straight Flush//
+                }else if (c == 4 && f == 4) {
+                    $(".sf").css("background-color","red");
+                //Straight//
+                }else if(c == 4){ 
                     $(".s").css("background-color","red");
+                //Flush//
+                }else if(f == 4){
+                    $(".f").css("background-color","red");
                 }
+
+                
                 break;
 
     }
@@ -271,17 +298,17 @@ function clickEvent(){
             }
     
             //Display the cards on the screen//
-            // $("#card1").attr("src", cards[second[0]]);
-            // $("#card2").attr("src", cards[second[1]]);
-            // $("#card3").attr("src", cards[second[2]]);
-            // $("#card4").attr("src", cards[second[3]]);
-            // $("#card5").attr("src", cards[second[4]]);
+            $("#card1").attr("src", cards[second[0]]);
+            $("#card2").attr("src", cards[second[1]]);
+            $("#card3").attr("src", cards[second[2]]);
+            $("#card4").attr("src", cards[second[3]]);
+            $("#card5").attr("src", cards[second[4]]);
 
-            $("#card1").attr("src", cards[0]);
-            $("#card2").attr("src", cards[3]);
-            $("#card3").attr("src", cards[4]);
-            $("#card4").attr("src", cards[2]);
-            $("#card5").attr("src", cards[1]);
+            // $("#card1").attr("src", cards[12]);
+            // $("#card2").attr("src", cards[11]);
+            // $("#card3").attr("src", cards[10]);
+            // $("#card4").attr("src", cards[9]);
+            // $("#card5").attr("src", cards[0]);
             
 
             //get the result//

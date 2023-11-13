@@ -14,7 +14,7 @@ body {
 
 .reward-1, .reward-2, .reward-3, .reward-4, .reward-5 {
     border: 4px #ffff00 solid;
-    width: 300px;
+    width: 400px;
     color: #ffff00;
     text-align: right;
 }

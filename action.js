@@ -64,6 +64,15 @@ function getResult(){
               if (isJackOrBetter) {
                 $(".jb").css("background-color","red");
                 test+= prices[0][multiple-1];
+                for (let i = 0; i < $("#bet").length; i++) {
+                    
+                    
+                }
+                $("#balance").text(
+                    ($("#balance").text()) 
+                    + 
+                    ($("#bet").text() * prices[0][multiple-1])
+                );
               }
               break;
               
@@ -244,7 +253,7 @@ function clickEvent(){
                 temp +=  $("#bet").text().charAt(i);
             }
         }
-        if (temp > 1) {
+        if (bet > 1) {
             $("#bet").text(temp/2 + "$") ;
         }
     });
@@ -386,7 +395,7 @@ function clickEvent(){
             // $("#card5").attr("src", cards[second[4]]);
 
             $("#card1").attr("src", cards[0]);
-            $("#card2").attr("src", cards[12]);
+            $("#card2").attr("src", cards[13]);
             $("#card3").attr("src", cards[11]);
             $("#card4").attr("src", cards[10]);
             $("#card5").attr("src", cards[9]);

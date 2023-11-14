@@ -4,10 +4,23 @@ var second = [];
 var helds = [Boolean];
 var canHeld = false;
 var onScreenCards = [];
+var multiple = 0;
 
 resetHelds();
 initializeCards();
 clickEvent();
+
+var prices = [
+    [1, 2 , 3 , 4 , 5],
+    [2, 4 , 6 , 8 , 10],
+    [3, 6 , 9 , 12 , 15],
+    [4, 8 , 12 , 16 , 20],
+    [6, 12 , 18 , 24 , 30],
+    [9, 18 , 27 , 36 , 45],
+    [25, 50 , 75 , 100 , 125],
+    [50, 100 , 150 , 200 , 250],
+    [250, 500 , 750 , 1000 , 4000]
+  ];
 
 $(".reward-1").css("background-color", "red");
 
@@ -25,10 +38,10 @@ function getResult(){
         }else{
             cardsNumbers[i] = parseInt(temp);
         } 
-        //test+=cardsNumbers[i] +" ";
+        
 
         cardsType[i] = onScreenCards[i].substr(10,1);
-        test+= cardsType[i];
+        
     }
 
     
@@ -50,23 +63,28 @@ function getResult(){
         case 1://JACKS OR BETTER//
               if (isJackOrBetter) {
                 $(".jb").css("background-color","red");
+                test+= prices[0][multiple-1];
               }
               break;
               
         case 2://TOO PAIRS//
                 $(".2p").css("background-color","red");
+                test+= prices[1][multiple-1];
                 break;
 
         case 3://TREE OF A KIND//
                 $(".3k").css("background-color","red");
+                test+= prices[2][multiple-1];
                 break;
 
         case 4://FULL HOUSE//
                 $(".fh").css("background-color","red");
+                test+= prices[5][multiple-1];
                 break;
 
         case 6://FOUR OF A KIND//
                 $(".4k").css("background-color","red");
+                test+= prices[6][multiple-1];
                 break;
 
         case 0://STRIAGHT AND FLUSH AND STRAIGHTFLUSH//
@@ -91,23 +109,26 @@ function getResult(){
                 //Royal Flush//
                 if (c == 3 && f == 4 && cardsNumbers[0] == 1) {
                     $(".rf").css("background-color","red");
+                    test+= prices[8][multiple-1];
                 //Straight Flush//
                 }else if (c == 4 && f == 4) {
                     $(".sf").css("background-color","red");
+                    test+= prices[7][multiple-1];
                 //Straight//
                 }else if(c == 4){ 
                     $(".s").css("background-color","red");
+                    test+= prices[3][multiple-1];
                 //Flush//
                 }else if(f == 4){
                     $(".f").css("background-color","red");
+                    test+= prices[4][multiple-1];
                 }
 
                 
                 break;
 
     }
-
-    test+=c;
+    
     $(".test").html(test);
     
 }
@@ -206,6 +227,29 @@ function clickEvent(){
         }
     });
 
+    $("#plus").click(function(){
+        var temp = "";
+        for (let i = 0; i < $("#bet").text().length; i++) {
+            if($("#bet").text().charAt(i) != "$"){
+                temp +=  $("#bet").text().charAt(i);
+            }
+        }
+        $("#bet").text(temp*2 + "$") ;
+    });
+
+    $("#minus").click(function(){
+        var temp = "";
+        for (let i = 0; i < $("#bet").text().length; i++) {
+            if($("#bet").text().charAt(i) != "$"){
+                temp +=  $("#bet").text().charAt(i);
+            }
+        }
+        if (temp > 1) {
+            $("#bet").text(temp/2 + "$") ;
+        }
+    });
+    
+
     //handle when the user click on the bet 1 button//
     $("#bet1").click(function(){
         if($(".reward-1").css("background-color") == "rgb(255, 0, 0)"){ 
@@ -242,6 +286,35 @@ function clickEvent(){
         //if the text is deal//
         if($("#draw").text() == "DEAL"){
             $(".test").text("test");
+
+            //Take bet from balance//
+            var bet = "";
+            
+
+            if($(".reward-1").css("background-color") == "rgb(255, 0, 0)"){ 
+                multiple = 1;
+            }else if($(".reward-2").css("background-color") == "rgb(255, 0, 0)"){
+                multiple = 2;
+            }else if($(".reward-3").css("background-color") == "rgb(255, 0, 0)"){
+                multiple = 3;
+            }else if($(".reward-4").css("background-color") == "rgb(255, 0, 0)"){
+                multiple = 4;
+            }else if($(".reward-5").css("background-color") == "rgb(255, 0, 0)"){
+                multiple = 5;
+            }
+
+
+            for (let i = 0; i < $("#bet").text().length; i++) {
+                if ($("#bet").text().charAt(i) != "$") {
+                    bet += $("#bet").text().charAt(i);
+                }
+            }
+
+            if ($("#balance").text() >= (bet*multiple) && $("#balance").text() > 0) {
+                $("#balance").text($("#balance").text() - (bet*multiple));
+            }
+           
+
             //Reset results//
             resetResult();
 
@@ -255,10 +328,14 @@ function clickEvent(){
             $("#draw").text("DRAW");
     
             //Disable the buttons bet 1 and bet 5 while playing//
+            $("#minus").prop('disabled', true);
+            $("#plus").prop('disabled', true);
             $("#bet1").prop('disabled', true);
             $("#bet").prop('disabled', true);
             $("#bet1").css("background-color","grey");
             $("#bet").css("background-color","grey");
+            $("#minus").css("background-color","grey");
+            $("#plus").css("background-color","grey");
             $("#bet5").prop('disabled', true);
             $("#bet5").css("background-color","grey");
     
@@ -277,10 +354,14 @@ function clickEvent(){
             canHeld = false;
     
             //Enable the buttons bet 1 and bet 5//
+            $("#minus").prop('disabled', false);
+            $("#plus").prop('disabled', false);
             $("#bet1").prop('disabled', false);
             $("#bet").prop('disabled', false);
             $("#bet1").css("background-color","#ffff00");
             $("#bet").css("background-color","#ffff00");
+            $("#plus").css("background-color","red");
+            $("#minus").css("background-color","black");
             $("#bet5").prop('disabled', false);
             $("#bet5").css("background-color","#ffff00");
     
@@ -298,21 +379,22 @@ function clickEvent(){
             }
     
             //Display the cards on the screen//
-            $("#card1").attr("src", cards[second[0]]);
-            $("#card2").attr("src", cards[second[1]]);
-            $("#card3").attr("src", cards[second[2]]);
-            $("#card4").attr("src", cards[second[3]]);
-            $("#card5").attr("src", cards[second[4]]);
+            // $("#card1").attr("src", cards[second[0]]);
+            // $("#card2").attr("src", cards[second[1]]);
+            // $("#card3").attr("src", cards[second[2]]);
+            // $("#card4").attr("src", cards[second[3]]);
+            // $("#card5").attr("src", cards[second[4]]);
 
-            // $("#card1").attr("src", cards[12]);
-            // $("#card2").attr("src", cards[11]);
-            // $("#card3").attr("src", cards[10]);
-            // $("#card4").attr("src", cards[9]);
-            // $("#card5").attr("src", cards[0]);
+            $("#card1").attr("src", cards[0]);
+            $("#card2").attr("src", cards[12]);
+            $("#card3").attr("src", cards[11]);
+            $("#card4").attr("src", cards[10]);
+            $("#card5").attr("src", cards[9]);
             
 
             //get the result//
             getResult();
+
         }
     });
 }

@@ -51,7 +51,7 @@ img {
     color: black;
     border: 4px black solid;
     min-width: 100px;
-    min-height: 50px;
+    min-height: 70px;
     font-weight: bolder;
     margin-left: 50px;
 }
@@ -63,22 +63,48 @@ img {
     margin-top: 20px;
 }
 
-#bet1 , #bet5 { 
+#bet1 , #bet5 , #balance-title , #balance { 
     background-color: #ffff00;
     color: black;
     border: 4px black solid;
     min-width: 100px;
-    min-height: 50px;
+    min-height: 70px;
     font-weight: bolder;
     margin-right: 10px;
+}
+
+#balance-title { 
+    margin-left: 50px;
 }
 
 #bet { 
     background-color: #ffff00;
     color: black;
     border: 4px black solid;
-    min-width: 50px;
-    min-height: 50px;
+    min-width: 100px;
+    min-height: 70px;
     font-weight: bolder;
     margin-right: 10px;
 }
+
+#adjust-bet button{
+    display: block;
+    min-width: 100px;
+    min-height: 33px;
+    margin-right: 20px;
+    font-size: 25px;
+    padding: 0;
+}
+
+#plus {
+    background-color: red;
+    color: white;
+}
+
+#minus { 
+    background-color: black;
+    color: white;
+}
+
+
+   

@@ -64,14 +64,9 @@ function getResult(){
               if (isJackOrBetter) {
                 $(".jb").css("background-color","red");
                 test+= prices[0][multiple-1];
-                for (let i = 0; i < $("#bet").length; i++) {
-                    
-                    
-                }
-                $("#balance").text(
-                    ($("#balance").text()) 
-                    + 
-                    ($("#bet").text() * prices[0][multiple-1])
+
+                $("#balance").text(parseInt($("#balance").text()) +
+                    parseInt((getBet() * prices[0][multiple-1]))
                 );
               }
               break;
@@ -79,21 +74,33 @@ function getResult(){
         case 2://TOO PAIRS//
                 $(".2p").css("background-color","red");
                 test+= prices[1][multiple-1];
+                $("#balance").text(parseInt($("#balance").text()) +
+                    parseInt((getBet() * prices[1][multiple-1]))
+                );
                 break;
 
         case 3://TREE OF A KIND//
                 $(".3k").css("background-color","red");
                 test+= prices[2][multiple-1];
+                $("#balance").text(parseInt($("#balance").text()) +
+                    parseInt((getBet() * prices[2][multiple-1]))
+                );
                 break;
 
         case 4://FULL HOUSE//
                 $(".fh").css("background-color","red");
                 test+= prices[5][multiple-1];
+                $("#balance").text(parseInt($("#balance").text()) +
+                    parseInt((getBet() * prices[5][multiple-1]))
+                );
                 break;
 
         case 6://FOUR OF A KIND//
                 $(".4k").css("background-color","red");
                 test+= prices[6][multiple-1];
+                $("#balance").text(parseInt($("#balance").text()) +
+                    parseInt((getBet() * prices[6][multiple-1]))
+                );
                 break;
 
         case 0://STRIAGHT AND FLUSH AND STRAIGHTFLUSH//
@@ -116,21 +123,33 @@ function getResult(){
 
                 }
                 //Royal Flush//
-                if (c == 3 && f == 4 && cardsNumbers[0] == 1) {
+                if (c == 3 && f == 4 && cardsNumbers[0] == 1 && cardsNumbers[4] == 13) {
                     $(".rf").css("background-color","red");
                     test+= prices[8][multiple-1];
+                    $("#balance").text(parseInt($("#balance").text()) +
+                    parseInt((getBet() * prices[8][multiple-1]))
+                );
                 //Straight Flush//
                 }else if (c == 4 && f == 4) {
                     $(".sf").css("background-color","red");
                     test+= prices[7][multiple-1];
+                    $("#balance").text(parseInt($("#balance").text()) +
+                    parseInt((getBet() * prices[7][multiple-1]))
+                );
                 //Straight//
                 }else if(c == 4){ 
                     $(".s").css("background-color","red");
                     test+= prices[3][multiple-1];
+                    $("#balance").text(parseInt($("#balance").text()) +
+                    parseInt((getBet() * prices[3][multiple-1]))
+                );
                 //Flush//
                 }else if(f == 4){
                     $(".f").css("background-color","red");
                     test+= prices[4][multiple-1];
+                    $("#balance").text(parseInt($("#balance").text()) +
+                    parseInt((getBet() * prices[4][multiple-1]))
+                );
                 }
 
                 
@@ -237,24 +256,23 @@ function clickEvent(){
     });
 
     $("#plus").click(function(){
-        var temp = "";
-        for (let i = 0; i < $("#bet").text().length; i++) {
-            if($("#bet").text().charAt(i) != "$"){
-                temp +=  $("#bet").text().charAt(i);
+        if (getBet() <= getBalance()) {
+            if (getBet()*2 <= getBalance()) {
+                $("#bet").text(parseInt(getBet()*2) + "$") ;
+            }else {
+                $("#bet").text(getBalance() + "$") ;
             }
         }
-        $("#bet").text(temp*2 + "$") ;
+       
     });
 
     $("#minus").click(function(){
-        var temp = "";
-        for (let i = 0; i < $("#bet").text().length; i++) {
-            if($("#bet").text().charAt(i) != "$"){
-                temp +=  $("#bet").text().charAt(i);
+        if (getBet() > 1) {
+            if (getBet()/2 < 1) {
+                $("#bet").text(1 + "$") ;
+            }else{
+                $("#bet").text(parseInt(getBet()/2) + "$") ;
             }
-        }
-        if (bet > 1) {
-            $("#bet").text(temp/2 + "$") ;
         }
     });
     
@@ -388,17 +406,17 @@ function clickEvent(){
             }
     
             //Display the cards on the screen//
-            // $("#card1").attr("src", cards[second[0]]);
-            // $("#card2").attr("src", cards[second[1]]);
-            // $("#card3").attr("src", cards[second[2]]);
-            // $("#card4").attr("src", cards[second[3]]);
-            // $("#card5").attr("src", cards[second[4]]);
+            $("#card1").attr("src", cards[second[0]]);
+            $("#card2").attr("src", cards[second[1]]);
+            $("#card3").attr("src", cards[second[2]]);
+            $("#card4").attr("src", cards[second[3]]);
+            $("#card5").attr("src", cards[second[4]]);
 
-            $("#card1").attr("src", cards[0]);
-            $("#card2").attr("src", cards[13]);
-            $("#card3").attr("src", cards[11]);
-            $("#card4").attr("src", cards[10]);
-            $("#card5").attr("src", cards[9]);
+            // $("#card1").attr("src", cards[0]);
+            // $("#card2").attr("src", cards[12]);
+            // $("#card3").attr("src", cards[11]);
+            // $("#card4").attr("src", cards[10]);
+            // $("#card5").attr("src", cards[9]);
             
 
             //get the result//
@@ -406,24 +424,6 @@ function clickEvent(){
 
         }
     });
-}
-
-function test(){ 
-        // $("#h1").text(helds[0]);
-        // $("#h2").text(helds[1]);
-        // $("#h3").text(helds[2]);
-        // $("#h4").text(helds[3]);
-        // $("#h5").text(helds[4]);
-
-        // $(".rf").css("background-color","red");
-        // $(".sf").css("background-color","red");
-        // $(".4k").css("background-color","red");
-        // $(".fh").css("background-color","red");
-        // $(".f").css("background-color","red");
-        // $(".s").css("background-color","red");
-        // $(".3k").css("background-color","red");
-        // $(".2p").css("background-color","red");
-        // $(".jb").css("background-color","red");
 }
 
 function initializeCards(){ 
@@ -500,4 +500,18 @@ function resetResult(){
         $(".3k").css("background-color","#00003f");
         $(".2p").css("background-color","#00003f");
         $(".jb").css("background-color","#00003f");
+}
+
+function getBet(){
+    var bet = "";
+    for (let i = 0; i < $("#bet").text().length; i++) {
+        if ($("#bet").text().charAt(i) != "$") {
+            bet += $("#bet").text().charAt(i);
+        }
+    }
+    return bet;
+}
+
+function getBalance(){ 
+    return parseInt($("#balance").text());
 }

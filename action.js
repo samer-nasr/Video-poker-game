@@ -151,10 +151,7 @@ function getResult(){
                     parseInt((getBet() * prices[4][multiple-1]))
                 );
                 }
-
-                
                 break;
-
     }
     
     $(".test").html(test);
@@ -263,7 +260,6 @@ function clickEvent(){
                 $("#bet").text(getBalance() + "$") ;
             }
         }
-       
     });
 
     $("#minus").click(function(){

@@ -3,7 +3,7 @@ body {
 }
 .reward-title { 
     border: 4px yellow solid;
-    width: 320px;
+    min-width: 215px;
     color: #ffff00;
 }
 
@@ -41,6 +41,8 @@ img {
     height: 350px;
     border-radius: 8px;
 }
+
+
 
 #h1 ,#h2 ,#h3 ,#h3 ,#h4 ,#h5 { 
     min-height: 30px;
@@ -115,4 +117,46 @@ img {
 }
 
 
+@media (max-width : 500px) {
+    img{ 
+        width: 90px;
+        height: 125px;
+    }
+
+    h2 { 
+        font-size: 15px;
+    }
+
+    #bet1 , #bet5 , #balance-title , #balance ,#draw , #bet { 
+        background-color: #ffff00;
+        color: black;
+        border: 2px black solid;
+        border-radius: 12px;
+        min-width: 60px;
+        min-height: 40px;
+        font-weight: bolder;
+        margin-right: 4px;
+        font-size: 10px;
+    }
+
+    #draw{ 
+        margin-left: 10px;
+    }
+
+    #balance-title { 
+        margin-left: 10px;
+    }
+
+    #adjust-bet button{
+        display: block;
+        min-width: 60px;
+        min-height: 10px;
+        margin-right: 10px;
+        font-size: 15px;
+        padding: 0;
+    }
+    
    
+
+
+}   

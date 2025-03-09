@@ -5,9 +5,20 @@ var helds = [Boolean];
 var canHeld = false;
 var onScreenCards = [];
 var multiple = 0;
+var is_loaded = false;
+
+
 
 resetHelds();
 initializeCards();
+
+if(!is_loaded)
+    {
+        preloadImages(cards , function(){
+            // alert('loaded successfully!')
+        });
+    }
+
 clickEvent();
 
 var prices = [
@@ -485,6 +496,25 @@ function initializeCards(){
     onScreenCards[3] = $("#card4").attr("src");
     onScreenCards[4] = $("#card5").attr("src");
 }
+
+//function to load images (optimization)
+function preloadImages(imageArray, callback) {
+    let loadedCount = 0;
+    let images = [];
+    
+    for (let i = 0; i < imageArray.length; i++) {
+        images[i] = new Image();
+        images[i].src = imageArray[i];
+        images[i].onload = function () {
+            loadedCount++;
+            is_loaded = true;
+            if (loadedCount === imageArray.length) {
+                callback();
+            }
+        };
+    }
+}
+
 
 function resetResult(){ 
         $(".rf").css("background-color","#00003f");

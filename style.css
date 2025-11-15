@@ -1,162 +1,378 @@
-body { 
-    background-color: #000099;
-}
-.reward-title { 
-    border: 4px yellow solid;
-    min-width: 215px;
-    color: #ffff00;
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap');
+
+* {
+    box-sizing: border-box;
 }
 
-.top { 
-    display: flex;
-    background-color: #00003f;
+body {
+    font-family: 'Raleway', sans-serif;
+    background: linear-gradient(135deg, #1e1e1e 0%, #2c2c2c 100%);
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    color: #fff;
 }
 
-.reward-1, .reward-2, .reward-3, .reward-4, .reward-5 {
-    border: 4px #ffff00 solid;
-    width: 400px;
-    color: #ffff00;
-    text-align: right;
-}
-
-h2 { 
-    margin-right: 3px;
-    margin-left: 3px;
-    font-size: 22px;
-    height: 20px;
-}
-
-.cards { 
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   text-align: center;
-   color: white;
-   margin-top: 10px;
-}
-
-img { 
-    margin-right: 8px;
-    width: 300px;
-    height: 350px;
-    border-radius: 8px;
-}
-
-
-
-#h1 ,#h2 ,#h3 ,#h3 ,#h4 ,#h5 { 
-    min-height: 30px;
-}
-
-#draw { 
-    background-color: #ffff00;
-    color: black;
-    border: 4px black solid;
-    border-radius: 12px;
-    min-width: 150px;
-    min-height: 70px;
-    font-weight: bolder;
-    margin-left: 50px;
-    font-size: 25px;
-}
-
-#bets { 
+/* Loading Screen */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 20px;
+    z-index: 9999;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
 }
 
-#bet1 , #bet5 , #balance-title , #balance { 
-    background-color: #ffff00;
-    color: black;
-    border: 4px black solid;
+.loader {
+    text-align: center;
+    color: #FFD700;
+}
+
+.loader h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.progress-bar {
+    width: 300px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 20px auto;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #FFD700 0%, #FFA500 100%);
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+.loader p {
+    font-size: 1.2em;
+    opacity: 0.8;
+}
+
+.top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    background: linear-gradient(135deg, #0f1419 0%, #1a1a2e 100%);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    overflow-x: auto;
+}
+
+.reward-title {
+    min-width: 200px;
+    font-weight: 700;
+    font-size: 1.1em;
+    color: #FFD700;
+}
+
+.reward-1, .reward-2, .reward-3, .reward-4, .reward-5 {
+    border: 2px solid #FFD700;
+    border-radius: 8px;
+    padding: 10px;
+    min-width: 160px;
+    color: #FFD700;
+    text-align: center;
+    transition: all 0.3s ease;
+    background: rgba(255, 215, 0, 0.1);
+    margin: 5px;
+}
+
+.reward-2, .reward-3, .reward-4, .reward-5 {
+    border-color: #666;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+h2 {
+    margin: 5px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.cards {
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin: 30px 0;
+}
+
+.cards div {
+    position: relative;
+}
+
+img {
+    width: 160px;
+    height: 230px;
     border-radius: 12px;
-    min-width: 150px;
-    min-height: 70px;
-    font-weight: bolder;
-    margin-right: 10px;
-    font-size: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
 }
 
-#balance-title { 
-    margin-left: 50px;
+img:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
 }
 
-#bet { 
-    background-color: #ffff00;
-    color: black;
-    border: 4px black solid;
+.win {
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+#h1, #h2, #h3, #h4, #h5 {
+    position: absolute;
+    top: -25px;
+    width: 100%;
+    text-align: center;
+    font-weight: 700;
+    color: #FFD700;
+    font-size: 14px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+
+
+/* Buttons */
+#bets {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin: 30px 0;
+    padding: 20px;
+    background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+    border-radius: 15px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+#adjust-bet {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+button {
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+    color: #000;
+    border: none;
     border-radius: 12px;
-    min-width: 150px;
-    min-height: 70px;
-    font-weight: bolder;
-    margin-right: 10px;
-    font-size: 25px;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 18px 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(255, 145, 0, 0.3);
+    width: 130px;
+    height: 55px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-#adjust-bet button{
-    display: block;
-    min-width: 100px;
-    min-height: 33px;
-    margin-right: 20px;
-    font-size: 30px;
+button:hover:not(:disabled) {
+    background: linear-gradient(135deg, #FFA500 0%, #FFD700 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 145, 0, 0.5);
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+#balance-title {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #FFD700;
+    font-weight: 600;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    width: 130px;
+    height: 55px;
+    text-align: center;
+}
+
+#plus, #minus {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 24px;
     padding: 0;
+    font-weight: 900;
 }
 
 #plus {
-    background-color: red;
-    border-radius: 12px;
+    background: linear-gradient(135deg, #FF6B6B 0%, #FF5252 100%);
     color: white;
 }
 
-#minus { 
-    background-color: black;
-    border-radius: 12px;
+#minus {
+    background: linear-gradient(135deg, #4ECDC4 0%, #45B7AA 100%);
     color: white;
 }
 
+#plus:hover, #minus:hover {
+    transform: translateY(-2px);
+}
 
-@media (max-width : 500px) {
-    img{ 
-        width: 90px;
-        height: 125px;
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .top {
+        padding: 15px;
     }
 
-    h2 { 
-        font-size: 15px;
+    .reward-title {
+        min-width: 180px;
+        font-size: 1em;
     }
 
-    #bet1 , #bet5 , #balance-title , #balance ,#draw , #bet { 
-        background-color: #ffff00;
-        color: black;
-        border: 2px black solid;
-        border-radius: 12px;
-        min-width: 60px;
-        min-height: 40px;
-        font-weight: bolder;
-        margin-right: 4px;
-        font-size: 10px;
+    .reward-1, .reward-2, .reward-3, .reward-4, .reward-5 {
+        min-width: 140px;
+        padding: 8px;
     }
 
-    #draw{ 
-        margin-left: 10px;
+    h2 {
+        font-size: 16px;
     }
 
-    #balance-title { 
-        margin-left: 10px;
+    img {
+        width: 100px;
+        height: 140px;
     }
 
-    #adjust-bet button{
-        display: block;
-        min-width: 60px;
-        min-height: 10px;
-        margin-right: 10px;
-        font-size: 15px;
-        padding: 0;
+    button {
+        font-size: 16px;
+        width: 110px;
+        height: 50px;
     }
-    
-   
 
+    #balance-title {
+        width: 110px;
+        height: 50px;
+    }
 
-}   
+    #plus, #minus {
+        width: 45px;
+        height: 45px;
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .top {
+        padding: 10px;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .reward-title {
+        min-width: 100%;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .reward-1, .reward-2, .reward-3, .reward-4, .reward-5 {
+        min-width: 120px;
+    }
+
+    img {
+        width: 80px;
+        height: 110px;
+    }
+
+    #bets {
+        gap: 10px;
+        padding: 15px 10px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 10px;
+        width: 80px;
+        height: 40px;
+    }
+
+    #balance-title {
+        width: 70px;
+        height: 40px;
+    }
+
+    #plus, #minus {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+
+    #h1, #h2, #h3, #h4, #h5 {
+        font-size: 12px;
+        top: -20px;
+    }
+}
+
+@media (max-width: 500px) {
+    body {
+        padding: 5px;
+    }
+
+    .top {
+        padding: 8px;
+    }
+
+    img {
+        width: 70px;
+        height: 95px;
+    }
+
+    button {
+        font-size: 12px;
+        padding: 8px;
+        width: 70px;
+        height: 35px;
+    }
+
+    #balance-title {
+        width: 60px;
+        height: 35px;
+    }
+
+    .reward-1, .reward-2, .reward-3, .reward-4, .reward-5 {
+        min-width: 100px;
+        padding: 5px;
+    }
+
+    h2 {
+        font-size: 14px;
+        margin: 3px;
+    }
+
+    #h1, #h2, #h3, #h4, #h5 {
+        font-size: 11px;
+        top: -18px;
+    }
+}

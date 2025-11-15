@@ -7,20 +7,6 @@ var onScreenCards = [];
 var multiple = 0;
 var is_loaded = false;
 
-
-
-resetHelds();
-initializeCards();
-
-if(!is_loaded)
-    {
-        preloadImages(cards , function(){
-            // alert('loaded successfully!')
-        });
-    }
-
-clickEvent();
-
 var prices = [
     [1, 2 , 3 , 4 , 5],
     [2, 4 , 6 , 8 , 10],
@@ -31,233 +17,264 @@ var prices = [
     [25, 50 , 75 , 100 , 125],
     [50, 100 , 150 , 200 , 250],
     [250, 500 , 750 , 1000 , 4000]
-  ];
+];
 
-$(".reward-1").css("background-color", "red");
+resetHelds();
+initializeCards();
+updateBalance(loadBalance());
 
-function getResult(){ 
+if(!is_loaded) {
+    preloadImages(cards , function(){
+        // All images loaded
+        $('#loading-screen').fadeOut(500, function() {
+            $(this).remove();
+        });
+        clickEvent(); // Initialize game after loading
+    }, function(progress) {
+        // Progress callback
+        let percentage = (progress / cards.length) * 100;
+        $('#progress-fill').css('width', percentage + '%');
+    });
+}
+
+function getResult(){
     initializeCards();
     var cardsNumbers = [];
     var cardsType = [];
     var test = "";
 
-    //To get the card number and store it in a array //
+    // Extract card numbers and suits
     for (let i = 0; i < onScreenCards.length; i++) {
         let temp = onScreenCards[i].substr(8,2);
         if(temp.charAt(0) == "0"){
             cardsNumbers[i] = parseInt(temp.charAt(1));
         }else{
             cardsNumbers[i] = parseInt(temp);
-        } 
-        
-
-        cardsType[i] = onScreenCards[i].substr(10,1);
-        
-    }
-
-    
-    //To check the result//
-    var counter = 0;
-    var isJackOrBetter = false;
-    for(let  i = 0 ; i < 4 ; i++){ 
-        for (let j = i+1; j < cardsNumbers.length; j++) {
-            if(cardsNumbers[i] == cardsNumbers[j]){
-                if (cardsNumbers[i] == 1 || (cardsNumbers[i] > 10 && cardsNumbers[i] < 14)) {
-                    isJackOrBetter = true;
-                }
-                counter++;
-            }
         }
+        cardsType[i] = onScreenCards[i].substr(10,1);
     }
 
-    switch(counter){
-        case 1://JACKS OR BETTER//
-              if (isJackOrBetter) {
-                $(".jb").css("background-color","red");
-                test+= prices[0][multiple-1];
+    // Evaluate hand
+    let handResult = evaluateHand(cardsNumbers, cardsType);
 
-                $("#balance").text(parseInt($("#balance").text()) +
-                    parseInt((getBet() * prices[0][multiple-1]))
-                );
-              }
-              break;
-              
-        case 2://TOO PAIRS//
-                $(".2p").css("background-color","red");
-                test+= prices[1][multiple-1];
-                $("#balance").text(parseInt($("#balance").text()) +
-                    parseInt((getBet() * prices[1][multiple-1]))
-                );
-                break;
+    // Highlight winning category and calculate payout
+    if(handResult.payoutIndex !== -1){
+        let payoutClass = handResult.className;
+        let payoutMultiplier = prices[handResult.payoutIndex][multiple-1];
+        $(`.${payoutClass}`).css("background-color","red");
+        $('#card1,#card2,#card3,#card4,#card5').addClass('win');
 
-        case 3://TREE OF A KIND//
-                $(".3k").css("background-color","red");
-                test+= prices[2][multiple-1];
-                $("#balance").text(parseInt($("#balance").text()) +
-                    parseInt((getBet() * prices[2][multiple-1]))
-                );
-                break;
-
-        case 4://FULL HOUSE//
-                $(".fh").css("background-color","red");
-                test+= prices[5][multiple-1];
-                $("#balance").text(parseInt($("#balance").text()) +
-                    parseInt((getBet() * prices[5][multiple-1]))
-                );
-                break;
-
-        case 6://FOUR OF A KIND//
-                $(".4k").css("background-color","red");
-                test+= prices[6][multiple-1];
-                $("#balance").text(parseInt($("#balance").text()) +
-                    parseInt((getBet() * prices[6][multiple-1]))
-                );
-                break;
-
-        case 0://STRIAGHT AND FLUSH AND STRAIGHTFLUSH//
-                
-                cardsNumbers.sort();
-                //Variable for straight//
-                var c = 0;
-
-                //Variable for flush//
-                var f = 0;
-
-                for (let i = 0; i < cardsNumbers.length-1; i++) {
-                        
-                        if (cardsNumbers[i]+1 == (cardsNumbers[i+1])) {
-                            c++;
-                        }
-                        if (cardsType[i] == cardsType[i+1]) {
-                            f+= 1;
-                        }
-
-                }
-                //Royal Flush//
-                if (c == 3 && f == 4 && cardsNumbers[0] == 1 && cardsNumbers[4] == 13) {
-                    $(".rf").css("background-color","red");
-                    test+= prices[8][multiple-1];
-                    $("#balance").text(parseInt($("#balance").text()) +
-                    parseInt((getBet() * prices[8][multiple-1]))
-                );
-                //Straight Flush//
-                }else if (c == 4 && f == 4) {
-                    $(".sf").css("background-color","red");
-                    test+= prices[7][multiple-1];
-                    $("#balance").text(parseInt($("#balance").text()) +
-                    parseInt((getBet() * prices[7][multiple-1]))
-                );
-                //Straight//
-                }else if(c == 4){ 
-                    $(".s").css("background-color","red");
-                    test+= prices[3][multiple-1];
-                    $("#balance").text(parseInt($("#balance").text()) +
-                    parseInt((getBet() * prices[3][multiple-1]))
-                );
-                //Flush//
-                }else if(f == 4){
-                    $(".f").css("background-color","red");
-                    test+= prices[4][multiple-1];
-                    $("#balance").text(parseInt($("#balance").text()) +
-                    parseInt((getBet() * prices[4][multiple-1]))
-                );
-                }
-                break;
+        let betAmount = getBet();
+        let winnings = betAmount * payoutMultiplier;
+        updateBalance(getBalance() + winnings);
+        test += winnings;
     }
-    
+
     $(".test").html(test);
-    
 }
 
-//Function to return a array of size 5 that contains the index of the cards randomly//
-function getCardsIndex(){ 
+function evaluateHand(numbers, suits) {
+    // Sort numbers for straight detection
+    let sortedNumbers = [...numbers].sort((a,b) => a - b);
+    let flush = isFlush(suits);
+    let straight = isStraight(sortedNumbers);
+
+    // Royal Flush: A-K-Q-J-10 same suit
+    if (flush && straight && sortedNumbers[0] === 1 && sortedNumbers[4] === 13) {
+        return { className: 'rf', payoutIndex: 8 };
+    }
+
+    // Straight Flush
+    if (flush && straight) {
+        return { className: 'sf', payoutIndex: 7 };
+    }
+
+    // Four of a Kind
+    let fourKind = getFourOfAKind(numbers);
+    if (fourKind.length > 0) {
+        return { className: '4k', payoutIndex: 6 };
+    }
+
+    // Full House
+    let [threeKind, pairs] = getThreeOfAKindAndPairs(numbers);
+    if (threeKind.length > 0 && pairs.length > 0) {
+        return { className: 'fh', payoutIndex: 5 };
+    }
+
+    // Flush
+    if (flush) {
+        return { className: 'f', payoutIndex: 4 };
+    }
+
+    // Straight
+    if (straight) {
+        return { className: 's', payoutIndex: 3 };
+    }
+
+    // Three of a Kind
+    if (threeKind.length > 0) {
+        return { className: '3k', payoutIndex: 2 };
+    }
+
+    // Two Pair
+    if (pairs.length >= 2) {
+        return { className: '2p', payoutIndex: 1 };
+    }
+
+    // Jacks or Better
+    let highPair = getHighPair(numbers);
+    if (highPair !== -1) {
+        return { className: 'jb', payoutIndex: 0 };
+    }
+
+    // Nothing
+    return { className: '', payoutIndex: -1 };
+}
+
+function isFlush(suits) {
+    return suits.every(suit => suit === suits[0]);
+}
+
+function isStraight(sortedNumbers) {
+    // Check normal straight
+    let isNormal = true;
+    for (let i = 0; i < sortedNumbers.length - 1; i++) {
+        if (sortedNumbers[i] + 1 !== sortedNumbers[i + 1]) {
+            isNormal = false;
+            break;
+        }
+    }
+    if (isNormal) return true;
+
+    // Check low straight: A-2-3-4-5
+    return sortedNumbers[0] === 1 && sortedNumbers[1] === 2 &&
+           sortedNumbers[2] === 3 && sortedNumbers[3] === 4 && sortedNumbers[4] === 5;
+}
+
+function getFourOfAKind(numbers) {
+    let counts = {};
+    numbers.forEach(num => counts[num] = (counts[num] || 0) + 1);
+    return Object.keys(counts).filter(num => counts[num] === 4);
+}
+
+function getThreeOfAKindAndPairs(numbers) {
+    let counts = {};
+    numbers.forEach(num => counts[num] = (counts[num] || 0) + 1);
+    let threeKind = Object.keys(counts).filter(num => counts[num] === 3);
+    let pairs = Object.keys(counts).filter(num => counts[num] === 2);
+    return [threeKind, pairs];
+}
+
+function getHighPair(numbers) {
+    let counts = {};
+    numbers.forEach(num => counts[num] = (counts[num] || 0) + 1);
+    let pairs = Object.keys(counts).filter(num => counts[num] >= 2 && (num == 1 || num >= 11));
+    return pairs.length > 0 ? pairs[0] : -1;
+}
+
+function resetResult(){
+    $(".rf").css("background-color","#00003f");
+    $(".sf").css("background-color","#00003f");
+    $(".4k").css("background-color","#00003f");
+    $(".fh").css("background-color","#00003f");
+    $(".f").css("background-color","#00003f");
+    $(".s").css("background-color","#00003f");
+    $(".3k").css("background-color","#00003f");
+    $(".2p").css("background-color","#00003f");
+    $(".jb").css("background-color","#00003f");
+
+    // Stop win animation on new hand
+    $('#card1,#card2,#card3,#card4,#card5').removeClass('win');
+}
+
+function getCardsIndex(){
     var cardIndex = [];
-    for(let i = 0 ; i<5 ; i++){ 
+    for(let i = 0 ; i<5 ; i++){
         let t = getRandomNumber();
         let exist = false;
-        for(let j = 0 ; j < 5 ; j++){ 
+        for(let j = 0 ; j < 5 ; j++){
             if(t == cardIndex[j]){
                 exist = true;
             }
         }
-        if(exist){ 
+        if(exist){
             let x = getRandomNumber();
-            while(x==cardIndex[0]||x==cardIndex[1]||x==cardIndex[2]||x==cardIndex[3]||x==cardIndex[4]){ 
+            while(x==cardIndex[0]||x==cardIndex[1]||x==cardIndex[2]||x==cardIndex[3]||x==cardIndex[4]){
                 x = getRandomNumber();
             }
             cardIndex[i] = x;
-            
-        }else{ 
+        }else{
             cardIndex[i] = t;
         }
     }
     return cardIndex;
 }
 
-//Function to get a number between 0 and 51//
 function getRandomNumber() {
     return Math.floor(Math.random() * 52);
 }
 
-function resetHelds(){ 
-        $("#h1").text("");
-        $("#h2").text("");
-        $("#h3").text("");
-        $("#h4").text("");
-        $("#h5").text("");
+function resetHelds(){
+    $("#h1").text("");
+    $("#h2").text("");
+    $("#h3").text("");
+    $("#h4").text("");
+    $("#h5").text("");
 
     for (let i = 0; i < 5; i++) {
         helds[i] = false;
     }
 }
 
-function clickEvent(){ 
+function clickEvent(){
+    $(".reward-1").css("background-color", "red");
+
     //handle when the user click on a card to held it//
-    $("#card1").click(function(){ 
-        if($("#h1").text() == "" && canHeld){ 
+    $("#card1").click(function(){
+        if($("#h1").text() == "" && canHeld){
             $("#h1").html("HELD");
             helds[0] = true;
-        }else{ 
+        }else{
             $("#h1").html("");
             helds[0] = false;
         }
     });
-    
-    $("#card2").click(function(){ 
-        if($("#h2").text() == "" && canHeld){ 
+
+    $("#card2").click(function(){
+        if($("#h2").text() == "" && canHeld){
             $("#h2").html("HELD");
             helds[1] = true;
-        }else{ 
+        }else{
             $("#h2").html("");
             helds[1] = false;
         }
     });
-    
-    $("#card3").click(function(){ 
-        if($("#h3").text() == "" && canHeld){ 
+
+    $("#card3").click(function(){
+        if($("#h3").text() == "" && canHeld){
             $("#h3").html("HELD");
             helds[2] = true;
-        }else{ 
+        }else{
             $("#h3").html("");
             helds[2] = false;
         }
     });
-    
-    $("#card4").click(function(){ 
-        if($("#h4").text() == "" && canHeld){ 
+
+    $("#card4").click(function(){
+        if($("#h4").text() == "" && canHeld){
             $("#h4").html("HELD");
             helds[3] = true;
-        }else{ 
+        }else{
             $("#h4").html("");
             helds[3] = false;
         }
     });
-    
-    $("#card5").click(function(){ 
-        if($("#h5").text() == "" && canHeld){ 
+
+    $("#card5").click(function(){
+        if($("#h5").text() == "" && canHeld){
             $("#h5").html("HELD");
             helds[4] = true;
-        }else{ 
+        }else{
             $("#h5").html("");
             helds[4] = false;
         }
@@ -282,23 +299,22 @@ function clickEvent(){
             }
         }
     });
-    
 
     //handle when the user click on the bet 1 button//
     $("#bet1").click(function(){
-        if($(".reward-1").css("background-color") == "rgb(255, 0, 0)"){ 
+        if($(".reward-1").css("background-color") == "rgb(255, 0, 0)"){
             $(".reward-1").css("background-color", "#00003f");
             $(".reward-2").css("background-color", "red");
-        }else if($(".reward-2").css("background-color") == "rgb(255, 0, 0)"){ 
+        }else if($(".reward-2").css("background-color") == "rgb(255, 0, 0)"){
             $(".reward-2").css("background-color", "#00003f");
             $(".reward-3").css("background-color", "red");
-        }else if($(".reward-3").css("background-color") == "rgb(255, 0, 0)"){ 
+        }else if($(".reward-3").css("background-color") == "rgb(255, 0, 0)"){
             $(".reward-3").css("background-color", "#00003f");
             $(".reward-4").css("background-color", "red");
-        }else if($(".reward-4").css("background-color") == "rgb(255, 0, 0)"){ 
+        }else if($(".reward-4").css("background-color") == "rgb(255, 0, 0)"){
             $(".reward-4").css("background-color", "#00003f");
             $(".reward-5").css("background-color", "red");
-        }else if($(".reward-5").css("background-color") == "rgb(255, 0, 0)"){ 
+        }else if($(".reward-5").css("background-color") == "rgb(255, 0, 0)"){
             $(".reward-5").css("background-color", "#00003f");
             $(".reward-1").css("background-color", "red");
         }
@@ -310,8 +326,13 @@ function clickEvent(){
         $(".reward-2").css("background-color", "#00003f");
         $(".reward-3").css("background-color", "#00003f");
         $(".reward-4").css("background-color", "#00003f");
-    
+
         $(".reward-5").css("background-color", "red");
+    });
+
+    // Handle reset balance button
+    $("#resetBalance").click(function(){
+        updateBalance(20);
     });
 
     //handle when the user click on the deal button//
@@ -323,9 +344,9 @@ function clickEvent(){
 
             //Take bet from balance//
             var bet = "";
-            
 
-            if($(".reward-1").css("background-color") == "rgb(255, 0, 0)"){ 
+
+            if($(".reward-1").css("background-color") == "rgb(255, 0, 0)"){
                 multiple = 1;
             }else if($(".reward-2").css("background-color") == "rgb(255, 0, 0)"){
                 multiple = 2;
@@ -345,22 +366,22 @@ function clickEvent(){
             }
 
             if ($("#balance").text() >= (bet*multiple) && $("#balance").text() > 0) {
-                $("#balance").text($("#balance").text() - (bet*multiple));
+                updateBalance(getBalance() - (bet*multiple));
             }
-           
+
 
             //Reset results//
             resetResult();
 
             //Reset helds //
             resetHelds();
-    
+
             //Give the user access to held cards//
             canHeld = true;
-    
+
             //Change button text from deal to draw//
             $("#draw").text("DRAW");
-    
+
             //Disable the buttons bet 1 and bet 5 while playing//
             $("#minus").prop('disabled', true);
             $("#plus").prop('disabled', true);
@@ -372,21 +393,21 @@ function clickEvent(){
             $("#plus").css("background-color","grey");
             $("#bet5").prop('disabled', true);
             $("#bet5").css("background-color","grey");
-    
+
             //To display 5 random cards//
             first = getCardsIndex();
-    
+
             $("#card1").attr("src", cards[first[0]]);
             $("#card2").attr("src", cards[first[1]]);
             $("#card3").attr("src", cards[first[2]]);
             $("#card4").attr("src", cards[first[3]]);
             $("#card5").attr("src", cards[first[4]]);
-    
-    
-        }else if($("#draw").text() == "DRAW"){ 
+
+
+        }else if($("#draw").text() == "DRAW"){
             //Remove the held access from the user//
             canHeld = false;
-    
+
             //Enable the buttons bet 1 and bet 5//
             $("#minus").prop('disabled', false);
             $("#plus").prop('disabled', false);
@@ -398,33 +419,26 @@ function clickEvent(){
             $("#minus").css("background-color","black");
             $("#bet5").prop('disabled', false);
             $("#bet5").css("background-color","#ffff00");
-    
+
             //Change button text from draw to deal//
             $("#draw").text("DEAL");
-    
+
             //Get new cards list//
             second = getCardsIndex();
-    
+
             //Modifie the new list to work with the held selected by the user//
-            for(let i = 0 ; i < 5 ; i++){ 
-                if(helds[i]){ 
+            for(let i = 0 ; i < 5 ; i++){
+                if(helds[i]){
                     second[i] = first[i];
                 }
             }
-    
+
             //Display the cards on the screen//
             $("#card1").attr("src", cards[second[0]]);
             $("#card2").attr("src", cards[second[1]]);
             $("#card3").attr("src", cards[second[2]]);
             $("#card4").attr("src", cards[second[3]]);
             $("#card5").attr("src", cards[second[4]]);
-
-            // $("#card1").attr("src", cards[0]);
-            // $("#card2").attr("src", cards[12]);
-            // $("#card3").attr("src", cards[11]);
-            // $("#card4").attr("src", cards[10]);
-            // $("#card5").attr("src", cards[9]);
-            
 
             //get the result//
             getResult();
@@ -433,7 +447,7 @@ function clickEvent(){
     });
 }
 
-function initializeCards(){ 
+function initializeCards(){
     cards[0] = "./cards/01B.PNG";
     cards[1] = "./cards/02B.PNG";
     cards[2] = "./cards/03B.PNG";
@@ -498,34 +512,48 @@ function initializeCards(){
 }
 
 //function to load images (optimization)
-function preloadImages(imageArray, callback) {
+function preloadImages(imageArray, callback, progressCallback) {
     let loadedCount = 0;
     let images = [];
-    
+
     for (let i = 0; i < imageArray.length; i++) {
         images[i] = new Image();
         images[i].src = imageArray[i];
         images[i].onload = function () {
             loadedCount++;
-            is_loaded = true;
+            // Update progress each time an image loads
+            if (progressCallback) progressCallback(loadedCount);
             if (loadedCount === imageArray.length) {
+                is_loaded = true;
+                callback();
+            }
+        };
+        // Handle image load errors
+        images[i].onerror = function() {
+            loadedCount++;
+            if (progressCallback) progressCallback(loadedCount);
+            if (loadedCount === imageArray.length) {
+                is_loaded = true;
                 callback();
             }
         };
     }
 }
 
+// Function to save balance to localStorage
+function saveBalance(balance) {
+    localStorage.setItem('videoPokerBalance', balance);
+}
 
-function resetResult(){ 
-        $(".rf").css("background-color","#00003f");
-        $(".sf").css("background-color","#00003f");
-        $(".4k").css("background-color","#00003f");
-        $(".fh").css("background-color","#00003f");
-        $(".f").css("background-color","#00003f");
-        $(".s").css("background-color","#00003f");
-        $(".3k").css("background-color","#00003f");
-        $(".2p").css("background-color","#00003f");
-        $(".jb").css("background-color","#00003f");
+// Function to load balance from localStorage
+function loadBalance() {
+    return parseInt(localStorage.getItem('videoPokerBalance')) || 20;
+}
+
+// Function to update balance
+function updateBalance(newBalance) {
+    $("#balance").text(newBalance);
+    saveBalance(newBalance);
 }
 
 function getBet(){
@@ -538,6 +566,6 @@ function getBet(){
     return bet;
 }
 
-function getBalance(){ 
+function getBalance(){
     return parseInt($("#balance").text());
 }

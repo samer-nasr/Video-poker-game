@@ -7,9 +7,19 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="logo.png" type="image/icon type">
     <script src="https://code.jquery.com/jquery-3.1.1.js" ></script>
-    <title>Cards Game</title>
+    <title>Video Poker Jacks or Better</title>
 </head>
 <body>
+
+    <div id="loading-screen">
+        <div class="loader">
+            <h1>Loading Video Poker</h1>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <p>Preparing cards...</p>
+        </div>
+    </div>
 
     <div class="top">
         <div class="reward-title">
@@ -121,8 +131,9 @@
 
         <button id="bet5">BET 5</button>
         <button id="draw">DEAL</button>
-        <button id="balance-title" >Balance :</button>>
-        <button id="balance">20</button>>
+        <button id="balance-title" >Balance :</button>
+        <button id="balance">20</button>
+        <button id="resetBalance">Reset Balance</button>
 
     </div>
     
